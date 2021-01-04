@@ -240,7 +240,7 @@ sortChangeButton.addEventListener('click', () => {
 });
 
 sortActionButton.addEventListener('click', () => {
-  // TODO: вывести в sortTimeLabel значение 'sorting...' (done - с кнопкой Перемешать... смотрится красивее)
+  // TODO: вывести в sortTimeLabel значение 'sorting...' (done - с кнопкой Перемешать смотрится красивее)
   const sort = sortAPI[sortKind];
   sortAPI.startSort(sort, fruits, comparationColor);
   display();
