@@ -90,11 +90,11 @@ const shuffleFruits = () => {
 
   // ATTENTION: сейчас при клике вы запустите бесконечный цикл и браузер зависнет
   while (fruits.length > 0) {
-    // TODO: допишите функцию перемешивания массива
+    // TODO: допишите функцию перемешивания массива (done)
     // Подсказка: находим случайный элемент из fruits, используя getRandomInt
     // вырезаем его из fruits и вставляем в result.
     // ex.: [1, 2, 3], [] => [1, 3], [2] => [3], [2, 1] => [], [2, 1, 3]
-    // (массив fruits будет уменьшатся, а result заполняться) (done)
+    // (массив fruits будет уменьшатся, а result заполняться)
     let fruitRandom = getRandomInt(0, fruits.length - 1);
     result.push(fruits.slice(fruitRandom, fruitRandom + 1)[0]);
     fruits.splice(fruitRandom, 1);
@@ -104,7 +104,7 @@ const shuffleFruits = () => {
   fruits = result;
   if (JSON.stringify(oldFruits) === JSON.stringify(fruits)) {
     alert('Порядок не изменился!');
-  };
+  }
 };
 
 shuffleButton.addEventListener('click', () => {
@@ -167,8 +167,50 @@ const sortAPI = {
     }
   },
 
-  quickSort(arr, comparation) {
-    // TODO: допишите функцию быстрой сортировки
+  // функция обмена элементов
+  swap(items, firstIndex, secondIndex) {
+    const temp = items[firstIndex];
+    items[firstIndex] = items[secondIndex];
+    items[secondIndex] = temp;
+  },
+
+  // функция разделитель
+  partition(items, left, right) {
+    var pivot = items[Math.floor((right +
+        let) / 2)],
+      i = left;
+    j = right;
+    while (i <= j) {
+      while (items[i] < pivot) {
+        i++;
+      }
+      while (items[j] > pivot) {
+        j--;
+      }
+      if (i <= j) {
+        this.swap(items, i, j);
+        i++;
+        j--;
+      }
+    }
+    return i;
+  },
+
+  quickSort(items, left, right) {
+    // TODO: допишите функцию быстрой сортировки (done)
+    var index;
+    if (items.length > 1) {
+      left = typeof left != "number" ? 0 : left;
+      right = typeof right != "number" ? items.length - 1 : right;
+      index = this.partition(items, left, right);
+      if (left < index - 1) {
+        this.quickSort(items, left, index - 1);
+      }
+      if (index < right) {
+        this.quickSort(items, index, right);
+      }
+    }
+    return items;
   },
 
   // выполняет сортировку и производит замер времени
@@ -185,16 +227,18 @@ sortKindLabel.textContent = sortKind;
 sortTimeLabel.textContent = sortTime;
 
 sortChangeButton.addEventListener('click', () => {
-  // TODO: переключать значение sortKind между 'bubbleSort' / 'quickSort'
+  // TODO: переключать значение sortKind между 'bubbleSort' / 'quickSort' (done)
+  sortKindLabel.textContent === 'bubbleSort' ? sortKindLabel.textContent = 'quickSort' : sortKindLabel.textContent = 'bubbleSort';
+  sortTimeLabel.textContent = 'sorting...';
 });
 
 sortActionButton.addEventListener('click', () => {
-  // TODO: вывести в sortTimeLabel значение 'sorting...'
+  // TODO: вывести в sortTimeLabel значение 'sorting...' (done - с кнопкой Сменить... смотрится красивее)
   const sort = sortAPI[sortKind];
   sortAPI.startSort(sort, fruits, comparationColor);
   display();
   // TODO: вывести в sortTimeLabel значение sortTime (done)
-  sortTimeLabel.innerText = sortTime;
+  sortTimeLabel.textContent = sortTime;
 });
 
 /*** ДОБАВИТЬ ФРУКТ ***/
