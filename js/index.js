@@ -57,7 +57,12 @@ const display = () => {
       case "светло-коричневый":
         fruitLi.className += ' fruit_lightbrown';
         break;
-    };
+
+        // цвет рамки для добавленных фруктов
+      default:
+        fruitLi.className += ' fruit_grey';
+        break;
+    }
 
     // вставляю элемент li
     fruitLi.innerHTML = `<div class = 'fruit__info'>
@@ -107,7 +112,9 @@ const shuffleFruits = () => {
   }
 };
 
+// после перемешивания необходимо отсортировать
 shuffleButton.addEventListener('click', () => {
+  sortTimeLabel.textContent = 'sorting...';
   shuffleFruits();
   display();
 });
@@ -148,7 +155,7 @@ let sortTime = '-'; // инициализация состояния време�
 const comparationColor = (a, b) => {
   // TODO: допишите функцию сравнения двух элементов по цвету (done)
 
-  // сортировка по алфавиту (для внесения фруктов любых цветов)
+  // сортировка по алфавиту
   return a.color > b.color ? true : false;
 };
 
@@ -229,11 +236,11 @@ sortTimeLabel.textContent = sortTime;
 sortChangeButton.addEventListener('click', () => {
   // TODO: переключать значение sortKind между 'bubbleSort' / 'quickSort' (done)
   sortKindLabel.textContent === 'bubbleSort' ? sortKindLabel.textContent = 'quickSort' : sortKindLabel.textContent = 'bubbleSort';
-  sortTimeLabel.textContent = 'sorting...';
+  sortTimeLabel.textContent = '-';
 });
 
 sortActionButton.addEventListener('click', () => {
-  // TODO: вывести в sortTimeLabel значение 'sorting...' (done - с кнопкой Сменить... смотрится красивее)
+  // TODO: вывести в sortTimeLabel значение 'sorting...' (done - с кнопкой Перемешать... смотрится красивее)
   const sort = sortAPI[sortKind];
   sortAPI.startSort(sort, fruits, comparationColor);
   display();
@@ -244,7 +251,23 @@ sortActionButton.addEventListener('click', () => {
 /*** ДОБАВИТЬ ФРУКТ ***/
 
 addActionButton.addEventListener('click', () => {
-  // TODO: создание и добавление нового фрукта в массив fruits
+  // TODO: создание и добавление нового фрукта в массив fruits (done)
   // необходимые значения берем из kindInput, colorInput, weightInput
+  if (kindInput.value === '' || colorInput.value === '' || weightInput.value === '') {
+    alert('Заполните все поля!');
+    return false;
+  } else if (isNaN(weightInput.value)) {
+    alert('Введите положительное число в поле weight!');
+    return false;
+  } else if (weightInput.value <= 0) {
+    alert('Введите положительное число в поле weight!');
+    return false;
+  }
+  let newFruit = {
+    kind: kindInput.value,
+    color: colorInput.value,
+    weight: weightInput.value
+  };
+  fruits.push(newFruit);
   display();
 });

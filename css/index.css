@@ -65,7 +65,8 @@ main {
 .panel__wrapper {
   flex-basis: 25%;
   max-height: inherit;
-  overflow: hidden;
+  /* Иначе кнопка Добавить не видна */
+  overflow: auto;
   background: aliceblue;
   display: flex;
   flex-direction: column;
@@ -125,6 +126,11 @@ main {
 
 .fruit_lightbrown {
   background: #cd853f;
+}
+
+/* цвет рамки для добавленных фруктов */
+.fruit_grey {
+  background: grey;
 }
 
 .fruit__info {
