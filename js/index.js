@@ -11,6 +11,9 @@ const colorInput = document.querySelector('.color__input'); // поле с на�
 const weightInput = document.querySelector('.weight__input'); // поле с весом
 const addActionButton = document.querySelector('.add__action__btn'); // кнопка добавления
 
+const minWeightFruit = document.querySelector('.minweight__input'); // поле минимального диапазона значений фильтрации
+const maxWeightFruit = document.querySelector('.maxweight__input'); // поле максимального диапазона значений фильтрации
+
 // список фруктов в JSON формате
 let fruitsJSON = `[
   {"kind": "Мангустин", "color": "фиолетовый", "weight": 13},
@@ -81,7 +84,7 @@ const getRandomInt = (min, max) => {
 // перемешивание массива
 const shuffleFruits = () => {
   let result = [];
-  
+
   // копирую массив
   let oldFruits = fruits.slice();
 
@@ -113,12 +116,26 @@ shuffleButton.addEventListener('click', () => {
 
 // фильтрация массива
 const filterFruits = () => {
-  fruits.filter((item) => {
-    // TODO: допишите функцию
+  fruits = fruits.filter((item) => {
+    // TODO: допишите функцию (done)
+    return (item.weight >= minWeightFruit.value && item.weight <= maxWeightFruit.value);
   });
 };
 
+// проверяю диапазон фильтрации
 filterButton.addEventListener('click', () => {
+  if (isNaN(minWeightFruit.value) || isNaN(maxWeightFruit.value)) {
+    alert('Введите положительные min и max weight для фильтрации!');
+    return false;
+  } else if (minWeightFruit.value <= 0 || maxWeightFruit.value <= 0) {
+    alert('Введите положительные min и max weight для фильтрации!');
+    return false;
+  } else if (minWeightFruit.value > maxWeightFruit.value) {
+    let temp = minWeightFruit.value;
+    minWeightFruit.value = maxWeightFruit.value;
+    maxWeightFruit.value = temp;
+  }
+
   filterFruits();
   display();
 });
@@ -129,12 +146,25 @@ let sortKind = 'bubbleSort'; // инициализация состояния в
 let sortTime = '-'; // инициализация состояния времени сортировки
 
 const comparationColor = (a, b) => {
-  // TODO: допишите функцию сравнения двух элементов по цвету
+  // TODO: допишите функцию сравнения двух элементов по цвету (done)
+
+  // сортировка по алфавиту (для внесения фруктов любых цветов)
+  return a.color > b.color ? true : false;
 };
 
 const sortAPI = {
   bubbleSort(arr, comparation) {
-    // TODO: допишите функцию сортировки пузырьком
+    // TODO: допишите функцию сортировки пузырьком (done)
+    const n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+      for (let j = 0; j < n - 1; j++) {
+        if (comparation(arr[j], arr[j + 1])) {
+          let temp = arr[j + 1];
+          arr[j + 1] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    }
   },
 
   quickSort(arr, comparation) {
@@ -163,7 +193,8 @@ sortActionButton.addEventListener('click', () => {
   const sort = sortAPI[sortKind];
   sortAPI.startSort(sort, fruits, comparationColor);
   display();
-  // TODO: вывести в sortTimeLabel значение sortTime
+  // TODO: вывести в sortTimeLabel значение sortTime (done)
+  sortTimeLabel.innerText = sortTime;
 });
 
 /*** ДОБАВИТЬ ФРУКТ ***/
